@@ -24,14 +24,14 @@ public class Tweet {
 
 
     @ManyToOne
-    @JoinColumn(name = "tweet_id")
+    @JoinColumn(name = "tweet_id_reply")
     private Tweet inReplyTo;
 
     @OneToMany(mappedBy = "inReplyTo")
     private List<Tweet> RepliedBy;
 
     @ManyToOne
-    @JoinColumn(name = "tweet_id")
+    @JoinColumn(name = "tweet_id_repost")
     private Tweet repostOf;
 
     @OneToMany(mappedBy = "repostOf")
@@ -52,7 +52,7 @@ public class Tweet {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> mentions;
 
-    @OneToMany(mappedBy = "hashtag")
+    @ManyToMany(mappedBy = "tweets")
     private List<Hashtag> hashtags;
 
 }
