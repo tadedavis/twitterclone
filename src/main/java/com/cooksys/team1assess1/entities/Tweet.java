@@ -16,6 +16,7 @@ public class Tweet {
     @ManyToOne
     private User author;
 
+    @CreationTimestamp
     private Timestamp posted;
 
     private boolean deleted = false;
