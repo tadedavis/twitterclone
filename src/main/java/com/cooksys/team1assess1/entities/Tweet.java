@@ -6,6 +6,8 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Data
 public class Tweet {

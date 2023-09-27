@@ -1,5 +1,8 @@
 package com.cooksys.team1assess1.exceptions;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class NotFoundException extends RuntimeException{
 
 	/**
