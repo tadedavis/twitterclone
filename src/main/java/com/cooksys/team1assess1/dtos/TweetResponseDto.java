@@ -12,21 +12,16 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class TweetResponseDto {
-    private User author;
+    
+    private Long id;
+    
+    private UserResponseDto author;
 
     private Timestamp posted;
 
-    private boolean deleted;
-
     private String content;
 
-    private Tweet inReplyTo;
+    private TweetResponseDto inReplyTo;
 
-    private Tweet repostOf;
-
-    private List<User> likes;
-
-    private List<User> mentions;
-
-    private List<Hashtag> hashtags;
+    private TweetResponseDto repostOf;
 }
