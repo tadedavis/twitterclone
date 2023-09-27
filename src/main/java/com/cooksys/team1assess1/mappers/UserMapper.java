@@ -4,6 +4,7 @@ import com.cooksys.team1assess1.dtos.UserRequestDto;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
 import com.cooksys.team1assess1.entities.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
