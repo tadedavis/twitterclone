@@ -15,21 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class TweetRequestDto {
-    private User author;
-
-    private Timestamp posted;
-
-    private boolean deleted;
 
     private String content;
 
-    private Tweet inReplyTo;
-
-    private Tweet repostOf;
-
-    private List<User> likes;
-
-    private List<User> mentions;
-
-    private List<Hashtag> hashtags;
+    private CredentialsDto credentials;
 }
