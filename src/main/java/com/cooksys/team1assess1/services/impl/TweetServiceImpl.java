@@ -1,5 +1,6 @@
 package com.cooksys.team1assess1.services.impl;
 
+import com.cooksys.team1assess1.dtos.CredentialsDto;
 import com.cooksys.team1assess1.dtos.TweetRequestDto;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
 import com.cooksys.team1assess1.services.TweetService;
@@ -18,7 +19,7 @@ public class TweetServiceImpl implements TweetService {@Override
 	}
 
 	@Override
-	public TweetResponseDto createSimpleTweet(TweetRequestDto tweetRequestDto) {
+	public TweetResponseDto createSimpleTweet(TweetRequestDto tweetRequestDto, CredentialsDto credentialsDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
