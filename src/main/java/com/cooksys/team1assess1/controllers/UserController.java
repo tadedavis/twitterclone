@@ -1,16 +1,13 @@
 package com.cooksys.team1assess1.controllers;
 
-import com.cooksys.team1assess1.entities.Tweet;
-import com.cooksys.team1assess1.dtos.*;
+import com.cooksys.team1assess1.dtos.TweetResponseDto;
+import com.cooksys.team1assess1.dtos.UserRequestDto;
+import com.cooksys.team1assess1.dtos.UserResponseDto;
 import com.cooksys.team1assess1.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,20 @@ public class UserController {
     @GetMapping("/@{username}/mentions")
     public List<TweetResponseDto> GetUserMentions(@PathVariable String username){
     	return userService.getUserMentions(username);
+    }
+
+    @GetMapping
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping
+    public UserResponseDto createUser(@RequestBody UserRequestDto user) {
+        return userService.createUser(user);
+    }
+
+    @PatchMapping("/@{username}")
+    public UserResponseDto updateProfile(@RequestBody UserRequestDto user, @PathVariable String username) {
+        return userService.updateProfile(user, username);
     }
 }
