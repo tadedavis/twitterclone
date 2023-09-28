@@ -6,7 +6,6 @@ import com.cooksys.team1assess1.exceptions.BadRequestException;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
 import com.cooksys.team1assess1.services.UserService;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
-import com.cooksys.team1assess1.entities.*;
 import com.cooksys.team1assess1.exceptions.NotFoundException;
 import com.cooksys.team1assess1.mappers.TweetMapper;
 import com.cooksys.team1assess1.mappers.UserMapper;
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserResponseDto> getAllUsers() {
-		return userMapper.entitiesToDtos(userRepository.findAll());
+		return userMapper.entitiesToDtos(userRepository.getAllNonDeletedUsers());
 	}
 
 	@Override
@@ -92,36 +91,41 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponseDto updateProfile(UserRequestDto userRequestDto, String username) throws BadRequestException, NotFoundException {
-//		if (!userRepository.existsByCredentialsUsername(username)) {
-//			throw new NotFoundException("User does not exist");
-//			// double check what is meant by the user is deleted
-//		}
-//		Optional<User> optionalUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
-//
-//		User userToUpdate = optionalUser.get();
-//
-//		User updatedUser = userMapper.dtoToEntity(userRequestDto);
-//
-//		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
-//			throw new BadRequestException("Credentials don't match");
-//		}
-		if (!userRepository.existsByCredentialsUsername(username)) {
-			throw new NotFoundException("User does not exist");
-			// double check what is meant by the user is deleted
-		}
-		Optional<User> optionalUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
 
-		if (optionalUser.isEmpty()) {
+		User userToUpdate = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
+		User updatedUser = userMapper.dtoToEntity(userRequestDto);
+
+		if (updatedUser.getProfile().getEmail() == null) {
+			throw new BadRequestException("Email field is required.");
 		}
-		User userToUpdate = optionalUser.get();
+
+		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
+			throw new BadRequestException("Credentials don't match");
+		}
+
+		userToUpdate.setProfile(updatedUser.getProfile());
+		userRepository.saveAndFlush(userToUpdate);
+
+		return userMapper.entityToDto(userToUpdate);
+	}
+
+	@Override
+	public UserResponseDto deleteUser(UserRequestDto userRequestDto, String username) {
+
+		User userToUpdate = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
 		User updatedUser = userMapper.dtoToEntity(userRequestDto);
 
 		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
 			throw new BadRequestException("Credentials don't match");
 		}
-		
 
+		userToUpdate.setDeleted(true);
+		userRepository.saveAndFlush(userToUpdate);
+
+		return userMapper.entityToDto(userToUpdate);
 	}
 }

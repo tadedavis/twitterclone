@@ -38,4 +38,9 @@ public class UserController {
     public UserResponseDto updateProfile(@RequestBody UserRequestDto user, @PathVariable String username) {
         return userService.updateProfile(user, username);
     }
+
+    @DeleteMapping("/@{username}")
+    public UserResponseDto deleteUser(@RequestBody UserRequestDto user, @PathVariable String username) {
+        return userService.deleteUser(user, username);
+    }
 }
