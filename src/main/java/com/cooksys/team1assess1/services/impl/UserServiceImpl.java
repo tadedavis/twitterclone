@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 		User updatedUser = userMapper.dtoToEntity(userRequestDto);
 
 
-		if (updatedUser.getProfile() == null) {
+		if (userToUpdate.getProfile() == null) {
 			throw new BadRequestException("User has no profile");
 		}
 
