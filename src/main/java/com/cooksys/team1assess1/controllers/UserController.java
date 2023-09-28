@@ -48,4 +48,20 @@ public class UserController {
     public List<UserResponseDto> getFollowers(@PathVariable String username) {
         return userService.getFollowers(username);
     }
+
+    @GetMapping("/@{username}/following")
+    public List<UserResponseDto> getFollowing(@PathVariable String username) {
+        return userService.getFollowing(username);
+    }
+
+    @GetMapping("/@{username}/tweets")
+    public List<TweetResponseDto> getUserTweets(@PathVariable String username) {
+        return userService.getUserTweets(username);
+    }
+
+//    @PostMapping("/@{username}/follow")
+//    public void follow(@RequestBody Credentials credentials, @PathVariable String username) {
+//        userService.follow(credentials, username);
+//    }
+
 }

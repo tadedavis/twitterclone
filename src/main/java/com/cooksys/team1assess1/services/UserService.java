@@ -24,4 +24,10 @@ public interface UserService {
 	public UserResponseDto deleteUser(UserRequestDto user, String username);
 
 	public List<UserResponseDto> getFollowers(String username);
+
+	public List<UserResponseDto> getFollowing(String username);
+
+	public List<TweetResponseDto> getUserTweets(String username);
+
+//	public void follow(Credentials credentials, String username);
 }
