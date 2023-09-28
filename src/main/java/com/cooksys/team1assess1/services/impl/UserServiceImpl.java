@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		}
 		Optional<User> optionalUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
 
-		if (!optionalUser.isPresent()) {
+		if (optionalUser.isEmpty()) {
 
 		}
 		User userToUpdate = optionalUser.get();
