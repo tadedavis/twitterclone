@@ -3,6 +3,7 @@ package com.cooksys.team1assess1.services;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
 import com.cooksys.team1assess1.dtos.UserRequestDto;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
+import com.cooksys.team1assess1.entities.Credentials;
 
 import java.util.List;
 
@@ -29,5 +30,5 @@ public interface UserService {
 
 	public List<TweetResponseDto> getUserTweets(String username);
 
-//	public void follow(Credentials credentials, String username);
+	public void follow(Credentials credentials, String username);
 }

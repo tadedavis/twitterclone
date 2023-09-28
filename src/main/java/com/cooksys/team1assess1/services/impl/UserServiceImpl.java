@@ -1,6 +1,7 @@
 package com.cooksys.team1assess1.services.impl;
 
 import com.cooksys.team1assess1.dtos.*;
+import com.cooksys.team1assess1.entities.Credentials;
 import com.cooksys.team1assess1.entities.Tweet;
 import com.cooksys.team1assess1.entities.User;
 import com.cooksys.team1assess1.exceptions.BadRequestException;
@@ -172,14 +173,33 @@ public class UserServiceImpl implements UserService {
 		List<TweetResponseDto> activeTweets = new ArrayList<>();
 
 		for (int i = tweets.size() - 1; i >= 0; i--) {
-			activeTweets.add(tweetMapper.entityToDto(tweets.get(i)));
+			if (!tweets.get(i).isDeleted()) {
+				activeTweets.add(tweetMapper.entityToDto(tweets.get(i)));
+			}
 		}
 
 		return activeTweets;
 	}
 
-//	@Override
-//	public void follow(Credentials credentials, String username) throws BadRequestException, NotFoundException {
-//
-//	}
+	@Override
+	public void follow(Credentials credentials, String username) throws BadRequestException, NotFoundException {
+		User follower = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername())
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
+
+		if (!follower.getCredentials().getPassword().equals(credentials.getPassword())) {
+			throw new BadRequestException("Wrong password.");
+		}
+		User followee = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("The user you're trying to follow doesn't exist or is deleted."));
+
+		if (followee.getFollowers().contains(follower)) {
+			throw new BadRequestException("You're already following that user.");
+		}
+
+		follower.getFollowing().add(followee);
+
+		userRepository.saveAndFlush(follower);
+	}
+
+	
 }

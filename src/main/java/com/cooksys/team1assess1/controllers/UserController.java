@@ -3,6 +3,7 @@ package com.cooksys.team1assess1.controllers;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
 import com.cooksys.team1assess1.dtos.UserRequestDto;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
+import com.cooksys.team1assess1.entities.Credentials;
 import com.cooksys.team1assess1.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +60,9 @@ public class UserController {
         return userService.getUserTweets(username);
     }
 
-//    @PostMapping("/@{username}/follow")
-//    public void follow(@RequestBody Credentials credentials, @PathVariable String username) {
-//        userService.follow(credentials, username);
-//    }
+    @PostMapping("/@{username}/follow")
+    public void follow(@RequestBody Credentials credentials, @PathVariable String username) {
+        userService.follow(credentials, username);
+    }
 
 }
