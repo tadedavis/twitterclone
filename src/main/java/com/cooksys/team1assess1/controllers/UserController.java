@@ -1,5 +1,6 @@
 package com.cooksys.team1assess1.controllers;
 
+import com.cooksys.team1assess1.dtos.CredentialsDto;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
 import com.cooksys.team1assess1.dtos.UserRequestDto;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
@@ -41,18 +42,18 @@ public class UserController {
     }
 
     @DeleteMapping("/@{username}")
-    public UserResponseDto deleteUser(@RequestBody UserRequestDto user, @PathVariable String username) {
-        return userService.deleteUser(user, username);
+    public UserResponseDto deleteUser(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
+        return userService.deleteUser(credentialsDto, username);
     }
 
     @GetMapping("/@{username}/followers")
-    public List<UserResponseDto> getFollowers(@PathVariable String username) {
-        return userService.getFollowers(username);
+    public List<UserResponseDto> getUserFollowers(@PathVariable String username) {
+        return userService.getUserFollowers(username);
     }
 
     @GetMapping("/@{username}/following")
-    public List<UserResponseDto> getFollowing(@PathVariable String username) {
-        return userService.getFollowing(username);
+    public List<UserResponseDto> getUserFollowing(@PathVariable String username) {
+        return userService.getUserFollowing(username);
     }
 
     @GetMapping("/@{username}/tweets")

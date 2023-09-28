@@ -1,5 +1,6 @@
 package com.cooksys.team1assess1.services;
 
+import com.cooksys.team1assess1.dtos.CredentialsDto;
 import com.cooksys.team1assess1.dtos.TweetResponseDto;
 import com.cooksys.team1assess1.dtos.UserRequestDto;
 import com.cooksys.team1assess1.dtos.UserResponseDto;
@@ -22,11 +23,11 @@ public interface UserService {
 
 	public UserResponseDto updateProfile(UserRequestDto userRequestDto, String username);
 
-	public UserResponseDto deleteUser(UserRequestDto user, String username);
+	public UserResponseDto deleteUser(CredentialsDto credentialsDto, String username);
 
-	public List<UserResponseDto> getFollowers(String username);
+	public List<UserResponseDto> getUserFollowers(String username);
 
-	public List<UserResponseDto> getFollowing(String username);
+	public List<UserResponseDto> getUserFollowing(String username);
 
 	public List<TweetResponseDto> getUserTweets(String username);
 

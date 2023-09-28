@@ -6,6 +6,7 @@ import com.cooksys.team1assess1.entities.Tweet;
 import com.cooksys.team1assess1.entities.User;
 import com.cooksys.team1assess1.exceptions.BadRequestException;
 import com.cooksys.team1assess1.exceptions.NotFoundException;
+import com.cooksys.team1assess1.mappers.CredentialsMapper;
 import com.cooksys.team1assess1.mappers.TweetMapper;
 import com.cooksys.team1assess1.mappers.UserMapper;
 import com.cooksys.team1assess1.repositories.TweetRepository;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 	
 	private final UserMapper userMapper;
 	private final TweetMapper tweetMapper;
+	private final CredentialsMapper credentialsMapper;
 	
 	@Override
 	public List<TweetResponseDto> getUserFeed(String username) {
@@ -128,25 +130,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponseDto deleteUser(UserRequestDto userRequestDto, String username) throws BadRequestException, NotFoundException {
+	public UserResponseDto deleteUser(CredentialsDto credentialsDto, String username) throws BadRequestException, NotFoundException {
 
 		User userToUpdate = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
 				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
-		User updatedUser = userMapper.dtoToEntity(userRequestDto);
+		User updatedUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentialsMapper.dtoToEntity(credentialsDto).getUsername())
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
-		if (userToUpdate.getCredentials() == null || !userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
+		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
 			throw new BadRequestException("Credentials don't match");
 		}
 
 		userToUpdate.setDeleted(true);
+//		userRepository.delete();
 		userRepository.saveAndFlush(userToUpdate);
-
 		return userMapper.entityToDto(userToUpdate);
 	}
 
 	@Override
-	public List<UserResponseDto> getFollowers(String username) throws NotFoundException {
+	public List<UserResponseDto> getUserFollowers(String username) throws NotFoundException {
 		User user = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
 				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
@@ -163,7 +166,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserResponseDto> getFollowing(String username) throws NotFoundException {
+	public List<UserResponseDto> getUserFollowing(String username) throws NotFoundException {
 		User user = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
 				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
 
@@ -215,6 +218,7 @@ public class UserServiceImpl implements UserService {
 		follower.getFollowing().add(followee);
 
 		userRepository.saveAndFlush(follower);
+
 	}
 
 	@Override
@@ -228,11 +232,13 @@ public class UserServiceImpl implements UserService {
 		User followee = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
 				.orElseThrow(() -> new NotFoundException("The user you're trying to follow doesn't exist or is deleted."));
 
+		System.out.println(followee.getFollowers().contains(follower));
 		if (!followee.getFollowers().contains(follower)) {
 			throw new BadRequestException("You're not following that user.");
 		}
 
 		follower.getFollowing().remove(followee);
+
 
 		userRepository.saveAndFlush(follower);
 	}
