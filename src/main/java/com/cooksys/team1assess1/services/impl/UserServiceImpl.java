@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
 		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
 			throw new BadRequestException("Credentials don't match");
 		}
-
+		
 
 	}
 }

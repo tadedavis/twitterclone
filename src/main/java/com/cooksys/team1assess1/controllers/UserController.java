@@ -14,14 +14,14 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    
+
     @GetMapping("/@{username}/feed")
     public List<TweetResponseDto> GetUserFeed(@PathVariable String username){
-    	return userService.getUserFeed(username);
+        return userService.getUserFeed(username);
     }
     @GetMapping("/@{username}/mentions")
     public List<TweetResponseDto> GetUserMentions(@PathVariable String username){
-    	return userService.getUserMentions(username);
+        return userService.getUserMentions(username);
     }
 
     @GetMapping
