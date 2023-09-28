@@ -46,8 +46,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponseDto getuserByUsername(String username) {
-        User user = userRepository.findByCredentialsUsername(username);
+    public UserResponseDto getUserByUsername(String username) {
+		User user = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("User not found or has been deleted."));
         return userMapper.entityToDto(user);
     }
 
@@ -105,7 +106,22 @@ public class UserServiceImpl implements UserService {
 			throw new BadRequestException("Credentials don't match");
 		}
 
-		userToUpdate.setProfile(updatedUser.getProfile());
+		if (updatedUser.getProfile().getEmail() != null) {
+			userToUpdate.getProfile().setEmail(updatedUser.getProfile().getEmail());
+		}
+
+		if (updatedUser.getProfile().getFirstName() != null) {
+			userToUpdate.getProfile().setFirstName(updatedUser.getProfile().getFirstName());
+		}
+
+		if (updatedUser.getProfile().getLastName() != null) {
+			userToUpdate.getProfile().setLastName(updatedUser.getProfile().getLastName());
+		}
+
+		if (updatedUser.getProfile().getPhone() != null) {
+			userToUpdate.getProfile().setPhone(updatedUser.getProfile().getPhone());
+		}
+
 		userRepository.saveAndFlush(userToUpdate);
 
 		return userMapper.entityToDto(userToUpdate);
@@ -119,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
 		User updatedUser = userMapper.dtoToEntity(userRequestDto);
 
-		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
+		if (userToUpdate.getCredentials() == null || !userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
 			throw new BadRequestException("Credentials don't match");
 		}
 

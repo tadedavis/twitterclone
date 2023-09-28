@@ -70,4 +70,9 @@ public class UserController {
         userService.unfollow(credentials, username);
     }
 
+    @GetMapping("/@{username}")
+    public UserResponseDto getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
 }

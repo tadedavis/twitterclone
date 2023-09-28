@@ -14,7 +14,7 @@ public interface UserService {
 
 	public List<TweetResponseDto> getUserMentions(String username);
 
-    UserResponseDto getuserByUsername(String username);
+    public UserResponseDto getUserByUsername(String username);
 
 	public List<UserResponseDto> getAllUsers();
 
