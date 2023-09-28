@@ -22,4 +22,6 @@ public interface UserService {
 	public UserResponseDto updateProfile(UserRequestDto userRequestDto, String username);
 
 	public UserResponseDto deleteUser(UserRequestDto user, String username);
+
+	public List<UserResponseDto> getFollowers(String username);
 }

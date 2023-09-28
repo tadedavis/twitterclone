@@ -97,8 +97,9 @@ public class UserServiceImpl implements UserService {
 
 		User updatedUser = userMapper.dtoToEntity(userRequestDto);
 
-		if (updatedUser.getProfile().getEmail() == null) {
-			throw new BadRequestException("Email field is required.");
+
+		if (updatedUser.getProfile() == null) {
+			throw new BadRequestException("User has no profile");
 		}
 
 		if (!userToUpdate.getCredentials().equals(updatedUser.getCredentials())) {
@@ -127,5 +128,22 @@ public class UserServiceImpl implements UserService {
 		userRepository.saveAndFlush(userToUpdate);
 
 		return userMapper.entityToDto(userToUpdate);
+	}
+
+	@Override
+	public List<UserResponseDto> getFollowers(String username) {
+		User user = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
+
+		List<User> followers = user.getFollowers();
+
+		List<UserResponseDto> activeFollowers = new ArrayList<>();
+
+		for (User follower : followers) {
+			if (!follower.isDeleted()) {
+				activeFollowers.add(userMapper.entityToDto(follower));
+			}
+		}
+		return activeFollowers;
 	}
 }

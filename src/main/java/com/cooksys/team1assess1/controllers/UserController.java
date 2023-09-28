@@ -43,4 +43,9 @@ public class UserController {
     public UserResponseDto deleteUser(@RequestBody UserRequestDto user, @PathVariable String username) {
         return userService.deleteUser(user, username);
     }
+
+    @GetMapping("/@{username}/followers")
+    public List<UserResponseDto> getFollowers(@PathVariable String username) {
+        return userService.getFollowers(username);
+    }
 }
