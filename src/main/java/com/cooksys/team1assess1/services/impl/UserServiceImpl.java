@@ -201,5 +201,24 @@ public class UserServiceImpl implements UserService {
 		userRepository.saveAndFlush(follower);
 	}
 
-	
+	@Override
+	public void unfollow(Credentials credentials, String username) throws BadRequestException, NotFoundException {
+		User follower = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername())
+				.orElseThrow(() -> new NotFoundException("User does not exist or is deleted."));
+
+		if (!follower.getCredentials().getPassword().equals(credentials.getPassword())) {
+			throw new BadRequestException("Wrong password.");
+		}
+		User followee = userRepository.findByCredentialsUsernameAndDeletedFalse(username)
+				.orElseThrow(() -> new NotFoundException("The user you're trying to follow doesn't exist or is deleted."));
+
+		if (!followee.getFollowers().contains(follower)) {
+			throw new BadRequestException("You're not following that user.");
+		}
+
+		follower.getFollowing().remove(followee);
+
+		userRepository.saveAndFlush(follower);
+	}
+
 }

@@ -31,4 +31,6 @@ public interface UserService {
 	public List<TweetResponseDto> getUserTweets(String username);
 
 	public void follow(Credentials credentials, String username);
+
+	public void unfollow(Credentials credentials, String username);
 }
