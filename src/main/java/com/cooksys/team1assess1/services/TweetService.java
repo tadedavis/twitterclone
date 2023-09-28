@@ -14,6 +14,8 @@ public interface TweetService {
 
 	List<HashtagDto> getTweetTags(Long id);
 
+	TweetResponseDto deleteTweet(Long id, CredentialsDto credentialsDto);
+
 	List<UserResponseDto> getUserLikes(Long id);
 
 	List<TweetResponseDto> getReplies(Long id);
@@ -23,4 +25,10 @@ public interface TweetService {
 	List<UserResponseDto> getMentions(Long id);
 
 	Context getContext(Long id);
+
+	void likeTweet(Long id, CredentialsDto credentialsDto);
+
+	TweetResponseDto replyTweet(Long id, TweetRequestDto tweetRequestDto);
+
+	TweetResponseDto repostTweet(Long id, CredentialsDto credentialsDto);
 }

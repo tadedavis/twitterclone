@@ -22,6 +22,6 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
 	List<Tweet> findByInReplyToOrderByPosted(Tweet tweet);
 
     @Query("SELECT t FROM Tweet t WHERE t.deleted = false")
-    List<TweetResponseDto> getAllNonDeletedTweets();
+    List<Tweet> getAllNonDeletedTweets();
 
 }

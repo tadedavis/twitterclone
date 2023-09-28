@@ -15,6 +15,6 @@ import java.util.List;
 public interface TweetMapper {
     TweetResponseDto entityToDto(Tweet entity);
     List<TweetResponseDto> entitiesToDtos(List<Tweet> entity);
-    Tweet DtoToentity(TweetRequestDto tweetRequestDto);
+    Tweet dtoToEntity(TweetRequestDto tweetRequestDto);
 
 }

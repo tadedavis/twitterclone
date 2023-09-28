@@ -23,13 +23,34 @@ public class TweetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TweetResponseDto createSimpleTweet(TweetRequestDto tweetRequestDto){
+    public TweetResponseDto createSimpleTweet(@RequestBody TweetRequestDto tweetRequestDto){
         return tweetService.createSimpleTweet(tweetRequestDto);
     }
 
     @GetMapping("/{id}")
     public TweetResponseDto getTweet(@PathVariable Long id){
         return tweetService.getTweet(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public TweetResponseDto deleteTweet(@PathVariable Long id, @RequestBody CredentialsDto credentialsDto){
+        return tweetService.deleteTweet(id, credentialsDto);
+    }
+
+    @PostMapping("/{id}/like")
+    public void likeTweet(@PathVariable Long id, @RequestBody CredentialsDto credentialsDto){
+        tweetService.likeTweet(id, credentialsDto);
+        return;
+    }
+
+    @PostMapping("/{id}/reply")
+    public TweetResponseDto replyTweet(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto){
+        return tweetService.replyTweet(id, tweetRequestDto);
+    }
+
+    @PostMapping("/{id}/repost")
+    public TweetResponseDto repostTweet(@PathVariable Long id, @RequestBody CredentialsDto credentialsDto){
+        return tweetService.repostTweet(id, credentialsDto);
     }
 
     @GetMapping("/{id}/tags")
