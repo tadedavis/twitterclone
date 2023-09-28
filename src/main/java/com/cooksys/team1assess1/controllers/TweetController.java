@@ -1,9 +1,6 @@
 package com.cooksys.team1assess1.controllers;
 
-import com.cooksys.team1assess1.dtos.CredentialsDto;
-import com.cooksys.team1assess1.dtos.TweetRequestDto;
-import com.cooksys.team1assess1.dtos.TweetResponseDto;
-import com.cooksys.team1assess1.dtos.UserResponseDto;
+import com.cooksys.team1assess1.dtos.*;
 import com.cooksys.team1assess1.services.Context;
 import com.cooksys.team1assess1.services.TweetService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +23,23 @@ public class TweetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TweetResponseDto createSimpleTweet(TweetRequestDto tweetRequestDto, CredentialsDto credentialsDto){
-        return tweetService.createSimpleTweet(tweetRequestDto, credentialsDto);
+    public TweetResponseDto createSimpleTweet(TweetRequestDto tweetRequestDto){
+        return tweetService.createSimpleTweet(tweetRequestDto);
+    }
+
+    @GetMapping("/{id}")
+    public TweetResponseDto getTweet(@PathVariable Long id){
+        return tweetService.getTweet(id);
+    }
+
+    @GetMapping("/{id}/tags")
+    public List<HashtagDto> getTags(@PathVariable Long id){
+        return tweetService.getTweetTags(id);
+    }
+
+    @GetMapping("/{id}/likes")
+    public List<UserResponseDto> getLikes(@PathVariable Long id){
+        return tweetService.getUserLikes(id);
     }
 
     @GetMapping("/{id}/replies")

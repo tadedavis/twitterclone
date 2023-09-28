@@ -3,12 +3,16 @@ package com.cooksys.team1assess1.services.impl;
 import com.cooksys.team1assess1.dtos.*;
 import com.cooksys.team1assess1.entities.User;
 import com.cooksys.team1assess1.exceptions.BadRequestException;
+import com.cooksys.team1assess1.dtos.UserResponseDto;
+import com.cooksys.team1assess1.services.UserService;
+import com.cooksys.team1assess1.dtos.TweetResponseDto;
+import com.cooksys.team1assess1.entities.*;
 import com.cooksys.team1assess1.exceptions.NotFoundException;
 import com.cooksys.team1assess1.mappers.TweetMapper;
 import com.cooksys.team1assess1.mappers.UserMapper;
 import com.cooksys.team1assess1.repositories.TweetRepository;
 import com.cooksys.team1assess1.repositories.UserRepository;
-import com.cooksys.team1assess1.services.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,13 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new NotFoundException("User not found or has been deleted."));
 		return tweetMapper.entitiesToDtos(user.getMentionedBy());
 	}
+
+
+    @Override
+    public UserResponseDto getuserByUsername(String username) {
+        User user = userRepository.findByCredentialsUsername(username);
+        return userMapper.entityToDto(user);
+    }
 
 	@Override
 	public List<UserResponseDto> getAllUsers() {

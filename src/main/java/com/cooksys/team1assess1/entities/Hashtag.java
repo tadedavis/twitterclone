@@ -10,13 +10,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Data
-
 public class Hashtag {
     @Id
     @GeneratedValue
     private Long id;
     
-    @Column(nullable = false, unique = true, columnDefinition = "citext")
+    /*@Column(nullable = false, unique = true, columnDefinition = "citext")*/
     private String label;
     
     @CreationTimestamp

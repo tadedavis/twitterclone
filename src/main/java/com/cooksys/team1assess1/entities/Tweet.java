@@ -2,6 +2,7 @@ package com.cooksys.team1assess1.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,7 +26,6 @@ public class Tweet {
 
     private String content;
 
-
     @ManyToOne
     @JoinColumn(name = "tweet_id_reply")
     private Tweet inReplyTo;
@@ -43,14 +43,14 @@ public class Tweet {
 
     @ManyToMany
     @JoinTable(
-            name = "likes",
+            name = "user_likes",
             joinColumns = @JoinColumn(name = "tweet_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> likes;
 
     @ManyToMany
     @JoinTable(
-            name = "mentions",
+            name = "user_mentions",
             joinColumns = @JoinColumn(name = "tweet_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> mentions;
